@@ -31,7 +31,7 @@
                         </div>
                         <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
                             <div></div>
-                            <a href="authentication/layouts/creative/reset-password.html" class="link-primary">Forgot Password ?</a>
+                            <a href="{{ route('password.request') }}" class="link-primary">Forgot Password ?</a>
                         </div>
                         <div class="d-grid mb-10">
                             <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">

@@ -59,8 +59,9 @@
 
 
     <form id="kt_ecommerce_add_category_form" class="form d-flex flex-column flex-lg-row" method="POST"
-        action="{{ url('admin/addcustomer') }}" enctype="multipart/form-data">
+        action="{{ url('admin/updatecustomer') }}" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="id" value="{{ $EditCustomer->id }}">
         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-400px mb-7 me-lg-10">
             <div class="card card-flush py-4">
                 <div class="card-header">
@@ -80,7 +81,9 @@
                     </style>
                     <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
                         data-kt-image-input="true">
-                        <div class="image-input-wrapper w-150px h-150px"></div>
+                        <div class="image-input-wrapper w-150px h-150px"
+                            style="background-image: url('{{ $EditCustomer->image ? asset('assets/customer/' . $EditCustomer->image) : asset('path/to/default/image.jpg') }}');">
+                        </div>
                         <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                             data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
                             <i class="ki-outline ki-pencil fs-7"></i>
@@ -113,8 +116,9 @@
                     <select class="form-select mb-2" name="status" data-control="select2" data-hide-search="true"
                         data-placeholder="Select an option" id="kt_ecommerce_add_category_status_select">
                         <option></option>
-                        <option value="Active" selected="selected">Active</option>
-                        <option value="In-Active">In-Active</option>
+                        <option @if ($EditCustomer->status == 'Active') selected @endif value="Active">Active</option>
+                        <option @if ($EditCustomer->status == 'In-Active') selected @endif value="In-Active">In-Active</option>
+                        <option @if ($EditCustomer->status == 'Archived') selected @endif value="Archived">Archived</option>
                     </select>
                 </div>
             </div>
@@ -131,8 +135,8 @@
                         <div class="col-md-12">
                             <div class="mb-5 fv-row">
                                 <label class="required form-label">Customer Name</label>
-                                <input type="text" required name="customer_name" class="form-control mb-2" placeholder=""
-                                    value="" />
+                                <input type="text" name="customer_name" class="form-control mb-2" placeholder=""
+                                    value="{{ $EditCustomer->name }}" />
                             </div>
                         </div>
 
@@ -140,7 +144,7 @@
                             <div class="mb-5 fv-row">
                                 <label class="required form-label">Guaranteed Person</label>
                                 <input type="text" name="Guaranteed_person" class="form-control mb-2" required
-                                    value="" />
+                                    value="{{ $EditCustomer->guaranteed_person }}" />
                             </div>
                         </div>
 
@@ -148,14 +152,14 @@
                             <div class="mb-5 fv-row">
                                 <label class="required form-label">Phone number</label>
                                 <input type="text" name="phone_number" class="form-control mb-2" required
-                                    value="" />
+                                    value="{{ $EditCustomer->phone }}" />
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="mb-5 fv-row">
                                 <label class="required form-label">Complete Address</label>
                                 <input type="text" name="complete_address" class="form-control mb-2" required
-                                    value="" />
+                                    value="{{ $EditCustomer->address }}" />
                             </div>
                         </div>
                     </div>
@@ -172,7 +176,8 @@
                         <div class="col-md-6">
                             <div class="mb-10">
                                 <label class="form-label">Debt Amount (PKR)</label>
-                                <input type="number" class="form-control mb-2" name="debpt_amount" />
+                                <input type="number" value="{{ $EditCustomer->debt_amount }}" class="form-control mb-2"
+                                    name="debpt_amount" />
                                 <div class="text-muted fs-7">This is the amount you gave that person while onboarding.
                                 </div>
                             </div>
@@ -180,7 +185,8 @@
                         <div class="col-md-6">
                             <div class="mb-10">
                                 <label class="form-label">Discount per kg (PKR)</label>
-                                <input type="number" class="form-control mb-2" name="meta_title" />
+                                <input type="number" value="{{ $EditCustomer->discount }}" class="form-control mb-2"
+                                    name="meta_title" />
                                 <div class="text-muted fs-7">The amount of discount applied to the supply of chicken he
                                     gets</div>
                             </div>
@@ -188,7 +194,8 @@
                         <div class="col-md-6">
                             <div class="mb-10">
                                 <label class="form-label">Fat rate/kg (PKR)</label>
-                                <input type="number" name="fat_rate" class="form-control mb-2" value="" />
+                                <input type="number" value="{{ $EditCustomer->fat_rate }}" name="fat_rate"
+                                    class="form-control mb-2" value="" />
                                 <div class="text-muted fs-7">Last updated on [date]</div>
                             </div>
                         </div>
@@ -196,7 +203,8 @@
                         <div class="col-md-6">
                             <div class="mb-10">
                                 <label class="form-label">Waste rate/kg (PKR)</label>
-                                <input type="number" name="waste_rate" class="form-control mb-2" value="" />
+                                <input type="number" value="{{ $EditCustomer->waste_rate }}" name="waste_rate"
+                                    class="form-control mb-2" value="" />
                                 <div class="text-muted fs-7">Last updated on [date]</div>
                             </div>
                         </div>

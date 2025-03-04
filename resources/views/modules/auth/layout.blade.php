@@ -34,7 +34,7 @@
         <div class="d-flex flex-column flex-root" id="kt_app_root">
             <style>
                 body {
-                    background-image: url("assets/media/auth/bg4.jpg");
+                    background-image: url('{{ asset("assets/media/auth/bg4.jpg") }}');
                 }
                 [data-bs-theme="dark"] body {
                     background-image: url("assets/media/auth/bg4-dark.jpg");
@@ -42,7 +42,7 @@
             </style>
 
             @yield('content')
-            
+
         </div>
 
         <script src="{{asset('assets/plugins/global/plugins.bundle.js')}}"></script>
