@@ -71,11 +71,11 @@
                 <div class="card-body text-center pt-0">
                     <style>
                         .image-input-placeholder {
-                            background-image: url('{{ asset('assets/media/svg/files/blank-image.svg') }}');
+                            background-image: url('{{ asset('public/assets/media/svg/files/blank-image.svg') }}');
                         }
 
                         [data-bs-theme="dark"] .image-input-placeholder {
-                            background-image: url('{{ asset('assets/media/svg/files/blank-image-dark.svg') }}');
+                            background-image: url('{{ asset('public/assets/media/svg/files/blank-image-dark.svg') }}');
                         }
                     </style>
                     <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"

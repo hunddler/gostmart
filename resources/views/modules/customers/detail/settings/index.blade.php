@@ -24,7 +24,7 @@
             <div class="col-lg-8">
                 <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('assets/media/svg/avatars/blank.svg')">
                     <div class="image-input-wrapper w-150px h-150px"
-                    style="background-image: url('{{ $CustomerDetail->image ? asset('assets/customer/' . $CustomerDetail->image) : asset('path/to/default/image.jpg') }}');">
+                    style="background-image: url('{{ $CustomerDetail->image ? asset('public/assets/customer/' . $CustomerDetail->image) : asset('path/to/default/image.jpg') }}');">
                 </div>
                     <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
                         <i class="ki-outline ki-pencil fs-7"></i>

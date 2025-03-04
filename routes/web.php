@@ -52,6 +52,7 @@ Route::post('admin/receiveamount', [App\Http\Controllers\DailySupplyController::
 Route::post('admin/adddropsupplyedit', [App\Http\Controllers\DailySupplyController::class, 'UpdateDailySupplyCustomer']);
 Route::post('admin/receiveamountedit', [App\Http\Controllers\DailySupplyController::class, 'ReceiveAmountEdit']);
 Route::post('admin/addcheckin', [App\Http\Controllers\DailySupplyController::class, 'AddCheckIn']);
+Route::post('admin/addcashout', [App\Http\Controllers\DailySupplyController::class, 'AddCashOut']);
 
 // Reports
 

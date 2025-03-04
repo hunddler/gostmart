@@ -20,6 +20,7 @@
                     <li class="breadcrumb-item text-muted">Customer Detail</li>
                 </ul>
             </div>
+            @if(Request::is('customer/detail/cash-in-cash-out/' . $CustomerDetail->id))
             <div class="d-flex align-items-center gap-2 gap-lg-3">
                 <a href="#"
                     class="btn btn-flex btn-outline btn-color-gray-700 btn-active-color-primary bg-body h-40px fs-7 fw-bold"
@@ -27,8 +28,9 @@
                     In</a>
                 <a href="#"
                     class="btn btn-flex btn-outline btn-color-gray-700 btn-active-color-primary bg-body h-40px fs-7 fw-bold"
-                    data-bs-toggle="modal" data-bs-target="#cash-out">Cash Out</a>
+                    data-bs-toggle="modal" onclick="cashout({{$CustomerDetail->id}})" data-bs-target="#cash-out">Cash Out</a>
             </div>
+            @endif
         </div>
     </div>
 </div>

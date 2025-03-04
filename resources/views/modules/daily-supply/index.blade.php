@@ -249,7 +249,7 @@
                                 <td class="text-end">
                                     <span class="text-danger">
                                         @if (!empty($DropSupply))
-                                            RS.{{ $Debit->total_debt_amount }}
+                                            RS.{{ $DropSupply->debt }}
                                         @else
                                             --
                                         @endif

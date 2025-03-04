@@ -182,53 +182,6 @@
             document.getElementById('current-rate-edit').textContent = rate;
             document.getElementById('total-amount-edit').textContent = totalAmount.toLocaleString();
         }
-
-        function checkIn(id) {
-            $('#customer_id_check_in').val(id);
-        }
-
-        $(document).ready(function() {
-            $('#kt_customers_export_form_checkin').on('submit', function(e) {
-                e.preventDefault();
-
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.error) {
-                            toastr.error(response.error);
-                        } else {
-                            toastr.success(response.success);
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000);
-                        }
-
-                    },
-                    error: function(response) {
-                        if (response.responseJSON.errors) {
-                            var errors = response.responseJSON.errors;
-                            var errorMsg = '';
-                            for (var error in errors) {
-                                errorMsg += errors[error][0] + '<br>';
-                            }
-                            toastr.error(errorMsg);
-                        } else {
-                            toastr.error(response.responseJSON.error);
-                        }
-
-
-
-                    }
-                });
-            });
-
-        });
     </script>
 
 @endsection

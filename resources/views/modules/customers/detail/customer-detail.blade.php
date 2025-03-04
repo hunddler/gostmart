@@ -3,8 +3,7 @@
         <div class="me-7 mb-4">
             <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
                 @if ($CustomerDetail->image)
-                    <img src="{{asset('assets/customer/' . $CustomerDetail->image)}}"
-                        alt="image" />
+                    <img src="{{ asset('public/assets/customer/' . $CustomerDetail->image) }}" alt="image" />
                 @else
                     <img src="https://cdn.vectorstock.com/i/500p/95/56/user-profile-icon-avatar-or-person-vector-45089556.jpg"
                         alt="image" />
@@ -77,22 +76,28 @@
     </div>
     <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
         <li class="nav-item mt-2">
-            <a class="nav-link text-active-primary ms-0 me-10 py-5 active"
-                href="{{ url('customer/detail/' . $CustomerDetail->id) }}">Chicken Supply</a>
+            <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ Request::is('customer/detail/' . $CustomerDetail->id) ? 'active' : '' }}"
+                href="{{ url('customer/detail/' . $CustomerDetail->id) }}">
+                Chicken Supply
+            </a>
         </li>
         <li class="nav-item mt-2">
-            <a class="nav-link text-active-primary ms-0 me-10 py-5"
-                href="{{ url('customer/detail/cash-in-cash-out/' . $CustomerDetail->id) }}">Cash In / Cash Out</a>
+            <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ Request::is('customer/detail/cash-in-cash-out/' . $CustomerDetail->id) ? 'active' : '' }}"
+                href="{{ url('customer/detail/cash-in-cash-out/' . $CustomerDetail->id) }}">
+                Cash In / Cash Out
+            </a>
         </li>
         <li class="nav-item mt-2 disabled">
-            <a class="nav-link text-active-primary ms-0 me-10 py-5" href="{{ url('customer/detail/fat') }}">Fat</a>
+            <a class="nav-link text-active-primary ms-0 me-10 py-5" href="javascript:void(0)">Fat</a>
+        </li>
+        <li class="nav-item mt-2 disabled">
+            <a class="nav-link text-active-primary ms-0 me-10 py-5" href="javascript:void(0)">Waste</a>
         </li>
         <li class="nav-item mt-2">
-            <a class="nav-link text-active-primary ms-0 me-10 py-5" href="{{ url('customer/detail/waste') }}">Waste</a>
-        </li>
-        <li class="nav-item mt-2">
-            <a class="nav-link text-active-primary ms-0 me-10 py-5"
-                href="{{ url('customer/detail/settings/' . $CustomerDetail->id) }}">Settings</a>
+            <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ Request::is('customer/detail/settings/' . $CustomerDetail->id) ? 'active' : '' }}"
+                href="{{ url('customer/detail/settings/' . $CustomerDetail->id) }}">
+                Settings
+            </a>
         </li>
     </ul>
 </div>
@@ -123,11 +128,48 @@
                         <textarea required class="form-control form-control-solid" name="detail" rows="2" cols="2"></textarea>
                     </div>
 
-                    <div class="fv-row mb-5">
-                        <label class="fs-5 fw-semibold form-label mb-5">Document</label>
-                        <input type="file" accept=".png, .jpg, .jpeg,.pdf,.docs"
-                            class="form-control form-control-solid" name="document" />
+                    <div class="text-center">
+                        <button type="reset" data-bs-dismiss="modal" id="kt_customers_export_cancel"
+                            class="btn btn-light me-3">Discard</button>
+                        <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
+                            <span class="indicator-label">Submit</span>
+                            <span class="indicator-progress">Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
                     </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="cash-out" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-400px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="fw-bold">Cash Out</h2>
+                <div id="kt_customers_export_close" data-bs-dismiss="modal"
+                    class="btn btn-icon btn-sm btn-active-icon-primary">
+                    <i class="ki-outline ki-cross fs-1"></i>
+                </div>
+            </div>
+            <div class="modal-body scroll-y mx-5 mx-xl-5 my-5">
+                <form id="kt_customers_export_form_cashout" method="POST" class="form"
+                    action="{{ url('admin/addcashout') }}">
+                    @csrf
+                    <input type="hidden" name="customer_id" id="customer_id_cash_out" value="">
+                    <div class="fv-row mb-5">
+                        <label class="fs-5 fw-semibold form-label mb-5">Amount</label>
+                        <input type="number" min="0" required class="form-control form-control-solid"
+                            name="amount" />
+                    </div>
+                    <div class="fv-row mb-5">
+                        <label class="fs-5 fw-semibold form-label mb-5">Description</label>
+                        <textarea required class="form-control form-control-solid" name="detail" rows="2" cols="2"></textarea>
+                    </div>
+
                     <div class="text-center">
                         <button type="reset" data-bs-dismiss="modal" id="kt_customers_export_cancel"
                             class="btn btn-light me-3">Discard</button>
