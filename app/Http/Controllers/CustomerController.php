@@ -6,6 +6,7 @@ use App\Models\CustomerDebt;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\CustomerSupplies;
+use App\Models\CashInOut;
 
 
 class CustomerController extends Controller
@@ -224,7 +225,8 @@ class CustomerController extends Controller
     {
         $CustomerDetail = Customer::find($id);
         $CustomerDebt = CustomerDebt::where('customer_id',$id)->first();
-        return view('modules.customers.detail.chicken-supply.index', compact('CustomerDetail','CustomerDebt'));
+        $CustomerCash = CashInOut::where('customer_id',$id)->get();
+        return view('modules.customers.detail.cash-in-cash-out.index', compact('CustomerDetail','CustomerDebt','CustomerCash'));
     }
 
     public static function sendimagetodirectory($imagename)

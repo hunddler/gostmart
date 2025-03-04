@@ -159,14 +159,21 @@ class DailySupplyController extends Controller
         }
         $Customers = CustomerDebt::where('customer_id', $customer_id)->first();
 
+        if ($amount > $muttonRate->total_amount || $amount < 0) {
+            return response()->json([
+                'error' => 'Invalid amount. The amount should not be greater than the total Bill amount.',
+            ], 422);
+        }
+
         $receiveAmount = $muttonRate->total_amount - $amount;
         $Debt          = $receiveAmount + $Customers->total_debt_amount;
 
         if ($muttonRate) {
             $muttonRate->update([
-                'received_amount' => $amount,
-                'difference'      => $receiveAmount,
-                'debt'            => $Debt,
+                'received_amount'      => $amount,
+                'difference'           => $receiveAmount,
+                'debt'                 => $Debt,
+                'previous_debt_amount' => $Customers->total_debt_amount,
 
             ]);
         }
@@ -229,14 +236,21 @@ class DailySupplyController extends Controller
         }
         $Customers = CustomerDebt::where('customer_id', $muttonRate->customer_id)->first();
 
+        if ($amount > $muttonRate->total_amount || $amount < 0) {
+            return response()->json([
+                'error' => 'Invalid amount. The amount should not be greater than the total Bill amount.',
+            ], 422);
+        }
+
         $receiveAmount = $muttonRate->total_amount - $amount;
         $Debt          = $receiveAmount + $Customers->total_debt_amount;
 
         if ($muttonRate) {
             $muttonRate->update([
-                'received_amount' => $amount,
-                'difference'      => $receiveAmount,
-                'debt'            => $Debt,
+                'received_amount'      => $amount,
+                'difference'           => $receiveAmount,
+                'debt'                 => $Debt,
+                'previous_debt_amount' => $Customers->total_debt_amount,
 
             ]);
         }
@@ -260,8 +274,14 @@ class DailySupplyController extends Controller
 
         $Customers = CustomerDebt::where('customer_id', $customer_id)->first();
 
-        $today   = Carbon::now('Asia/Karachi')->toDateString();
-        $checkIn = $amount + $Customers->total_debt_amount;
+        $today = Carbon::now('Asia/Karachi')->toDateString();
+
+        if ($amount > $Customers->total_debt_amount || $amount < 0) {
+            return response()->json([
+                'error' => 'Invalid amount. The amount should not be greater than the total debt or negative.',
+            ], 422);
+        }
+        $checkIn = $Customers->total_debt_amount - $amount;
 
         $ChekIn                    = new CashInOut();
         $ChekIn->customer_id       = $customer_id;
@@ -270,13 +290,46 @@ class DailySupplyController extends Controller
         $ChekIn->cash              = $amount;
         $ChekIn->total_debt_amount = $checkIn;
         $ChekIn->detail            = $request->detail;
-        $ChekIn->type              = 'checkin';
-        if ($request->has('document')) {
-            $Customer->ChekIn = $this->sendimagetodirectory($request->file('document'));
-        }
+        $ChekIn->type              = 'cashin';
         $ChekIn->save();
 
+        DB::table('customer_debt')->where('customer_id', $customer_id)->update(['total_debt_amount' => $checkIn]);
+
         return response()->json(['success' => 'Check In Added successfully']);
+
+    }
+
+    public function AddCashOut(Request $request)
+    {
+
+        $request->validate([
+            'amount' => 'required|numeric|min:0.1',
+            'detail' => 'required',
+
+        ]);
+
+        $amount      = $request->input('amount', 0);
+        $customer_id = $request->input('customer_id');
+
+        $Customers = CustomerDebt::where('customer_id', $customer_id)->first();
+
+        $today = Carbon::now('Asia/Karachi')->toDateString();
+
+        $checkIn = $Customers->total_debt_amount + $amount;
+
+        $ChekIn                    = new CashInOut();
+        $ChekIn->customer_id       = $customer_id;
+        $ChekIn->date              = $today;
+        $ChekIn->debt_amount       = $Customers->total_debt_amount;
+        $ChekIn->cash              = $amount;
+        $ChekIn->total_debt_amount = $checkIn;
+        $ChekIn->detail            = $request->detail;
+        $ChekIn->type              = 'cashout';
+        $ChekIn->save();
+
+        DB::table('customer_debt')->where('customer_id', $customer_id)->update(['total_debt_amount' => $checkIn]);
+
+        return response()->json(['success' => 'Check Out Added successfully']);
 
     }
 
