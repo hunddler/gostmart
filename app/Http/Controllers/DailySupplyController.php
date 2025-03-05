@@ -5,6 +5,7 @@ use App\Models\CashInOut;
 use App\Models\Customer;
 use App\Models\CustomerDebt;
 use App\Models\CustomerSupplies;
+use App\Models\FatWaste;
 use App\Models\GoshtRate;
 use Carbon\Carbon;
 use DB;
@@ -330,6 +331,68 @@ class DailySupplyController extends Controller
         DB::table('customer_debt')->where('customer_id', $customer_id)->update(['total_debt_amount' => $checkIn]);
 
         return response()->json(['success' => 'Check Out Added successfully']);
+
+    }
+
+    public function AddFat(Request $request)
+    {
+
+        $request->validate([
+            'fat_waste_kg'   => 'required|numeric|min:0.1',
+            'fat_waste_rate' => 'required|numeric|min:0.1',
+
+        ]);
+
+        $amount      = $request->input('fat_waste_rate', 0);
+        $supply      = $request->input('fat_waste_kg');
+        $customer_id = $request->input('customer_id');
+
+        $today = Carbon::now('Asia/Karachi')->toDateString();
+
+        $total_amount = $amount * $supply;
+        $total_amount = max($total_amount, 0);
+
+        $Fat                 = new FatWaste();
+        $Fat->customer_id    = $customer_id;
+        $Fat->date           = $today;
+        $Fat->fat_waste_rate = $amount;
+        $Fat->fat_waste_kg   = $supply;
+        $Fat->total          = $total_amount;
+        $Fat->type           = 'fat';
+        $Fat->save();
+
+        return response()->json(['success' => 'Fat Added successfully']);
+
+    }
+
+    public function AddWaste(Request $request)
+    {
+
+        $request->validate([
+            'fat_waste_kg'   => 'required|numeric|min:0.1',
+            'fat_waste_rate' => 'required|numeric|min:0.1',
+
+        ]);
+
+        $amount      = $request->input('fat_waste_rate', 0);
+        $supply      = $request->input('fat_waste_kg');
+        $customer_id = $request->input('customer_id');
+
+        $today = Carbon::now('Asia/Karachi')->toDateString();
+
+        $total_amount = $amount * $supply;
+        $total_amount = max($total_amount, 0);
+
+        $Fat                 = new FatWaste();
+        $Fat->customer_id    = $customer_id;
+        $Fat->date           = $today;
+        $Fat->fat_waste_rate = $amount;
+        $Fat->fat_waste_kg   = $supply;
+        $Fat->total          = $total_amount;
+        $Fat->type           = 'waste';
+        $Fat->save();
+
+        return response()->json(['success' => 'waste Added successfully']);
 
     }
 

@@ -25,6 +25,9 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('admin/dashboard', [App\Http\Controllers\HomeController::class, 'Dashboard']);
+Route::get('account-settings', [App\Http\Controllers\HomeController::class, 'AccountSetting']);
+Route::post('update-password', [App\Http\Controllers\HomeController::class, 'change_password']);
+Route::post('update-profile', [App\Http\Controllers\HomeController::class, 'update_profile']);
 
 // Customers
 
@@ -42,6 +45,8 @@ Route::get('customer/detail/{id}', [App\Http\Controllers\CustomerController::cla
 Route::get('customer/detail/settings/{id}', [App\Http\Controllers\CustomerController::class, 'Customersetting']);
 Route::post('admin/updatecustomersettings', [App\Http\Controllers\CustomerController::class, 'UpdateCustomerSettings']);
 Route::get('customer/detail/cash-in-cash-out/{id}', [App\Http\Controllers\CustomerController::class, 'CustomerCash']);
+Route::get('customer/detail/fat/{id}', [App\Http\Controllers\CustomerController::class, 'CustomerFat']);
+Route::get('customer/detail/waste/{id}', [App\Http\Controllers\CustomerController::class, 'CustomerWaste']);
 
 // Daily Supply & Billing
 Route::get('daily-supply', [App\Http\Controllers\DailySupplyController::class, 'DailySupply']);
@@ -53,6 +58,9 @@ Route::post('admin/adddropsupplyedit', [App\Http\Controllers\DailySupplyControll
 Route::post('admin/receiveamountedit', [App\Http\Controllers\DailySupplyController::class, 'ReceiveAmountEdit']);
 Route::post('admin/addcheckin', [App\Http\Controllers\DailySupplyController::class, 'AddCheckIn']);
 Route::post('admin/addcashout', [App\Http\Controllers\DailySupplyController::class, 'AddCashOut']);
+Route::post('admin/addfat', [App\Http\Controllers\DailySupplyController::class, 'AddFat']);
+Route::post('admin/addwaste', [App\Http\Controllers\DailySupplyController::class, 'AddWaste']);
+
 
 // Reports
 
@@ -68,15 +76,8 @@ Route::get('/report/waste', function () {
     return view('modules.reports.waste');
 });
 
-// Detail
-Route::get('customer/detail/chicken-supply', function () {
-    return view('modules.customers.detail.chicken-supply.index');
-});
 
-Route::get('customer/detail/fat', function () {
-    return view('modules.customers.detail.fat.index');
-});
 
-Route::get('customer/detail/waste', function () {
-    return view('modules.customers.detail.waste.index');
-});
+
+
+

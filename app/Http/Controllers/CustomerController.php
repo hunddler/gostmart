@@ -7,6 +7,8 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Models\CustomerSupplies;
 use App\Models\CashInOut;
+use App\Models\FatWaste;
+
 
 
 class CustomerController extends Controller
@@ -227,6 +229,22 @@ class CustomerController extends Controller
         $CustomerDebt = CustomerDebt::where('customer_id',$id)->first();
         $CustomerCash = CashInOut::where('customer_id',$id)->get();
         return view('modules.customers.detail.cash-in-cash-out.index', compact('CustomerDetail','CustomerDebt','CustomerCash'));
+    }
+
+    public function CustomerFat($id)
+    {
+        $CustomerDetail = Customer::find($id);
+        $CustomerDebt = CustomerDebt::where('customer_id',$id)->first();
+        $CustomerFat = FatWaste::where('customer_id',$id)->where('type','fat')->get();
+        return view('modules.customers.detail.fat.index', compact('CustomerDetail','CustomerDebt','CustomerFat'));
+    }
+
+    public function CustomerWaste($id)
+    {
+        $CustomerDetail = Customer::find($id);
+        $CustomerDebt = CustomerDebt::where('customer_id',$id)->first();
+        $CustomerFat = FatWaste::where('customer_id',$id)->where('type','waste')->get();
+        return view('modules.customers.detail.waste.index', compact('CustomerDetail','CustomerDebt','CustomerFat'));
     }
 
     public static function sendimagetodirectory($imagename)
