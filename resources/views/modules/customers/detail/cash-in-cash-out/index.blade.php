@@ -57,6 +57,8 @@
 
     @include('modules.daily-supply.popups.drop-supply')
     @include('modules.daily-supply.popups.receive-amount')
+    @include('modules.customers.detail.script-modal')
+
 
     <script>
         function cashout(id) {

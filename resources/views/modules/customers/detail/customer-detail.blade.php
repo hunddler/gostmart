@@ -25,12 +25,13 @@
                     </div>
                 </div>
                 <div class="d-flex my-4">
-                    <a href="#" class="btn btn-sm btn-light me-2" id="kt_user_follow_button">
+                    <a href="#" onclick="getafat({{ $CustomerDetail->id }})" class="btn btn-sm btn-light me-2"
+                        data-bs-target="#kt_modal_fat" data-bs-toggle="modal" id="kt_user_follow_button">
                         <i class="ki-outline ki-check fs-3 d-none"></i>
                         <span class="indicator-label">Record Fat</span>
                     </a>
-                    <a href="#" class="btn btn-sm btn-light me-3" data-bs-toggle="modal"
-                        data-bs-target="#kt_modal_offer_a_deal">Record Waste</a>
+                    <a href="#" onclick="getwaste({{ $CustomerDetail->id }})" class="btn btn-sm btn-light me-3"
+                        data-bs-toggle="modal" data-bs-target="#kt_modal_waste">Record Waste</a>
                     <div class="me-0">
                         <button class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
                             data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -88,10 +89,12 @@
             </a>
         </li>
         <li class="nav-item mt-2 disabled">
-            <a class="nav-link text-active-primary ms-0 me-10 py-5" href="javascript:void(0)">Fat</a>
+            <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ Request::is('customer/detail/fat/' . $CustomerDetail->id) ? 'active' : '' }}"
+                href="{{ url('customer/detail/fat/' . $CustomerDetail->id) }}">Fat</a>
         </li>
         <li class="nav-item mt-2 disabled">
-            <a class="nav-link text-active-primary ms-0 me-10 py-5" href="javascript:void(0)">Waste</a>
+            <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ Request::is('customer/detail/waste/' . $CustomerDetail->id) ? 'active' : '' }}"
+                href="{{ url('customer/detail/waste/' . $CustomerDetail->id) }}">Waste</a>
         </li>
         <li class="nav-item mt-2">
             <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ Request::is('customer/detail/settings/' . $CustomerDetail->id) ? 'active' : '' }}"
@@ -100,88 +103,4 @@
             </a>
         </li>
     </ul>
-</div>
-
-
-<div class="modal fade" id="cash-in" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mw-400px">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="fw-bold">Cash In</h2>
-                <div id="kt_customers_export_close" data-bs-dismiss="modal"
-                    class="btn btn-icon btn-sm btn-active-icon-primary">
-                    <i class="ki-outline ki-cross fs-1"></i>
-                </div>
-            </div>
-            <div class="modal-body scroll-y mx-5 mx-xl-5 my-5">
-                <form id="kt_customers_export_form_checkin" method="POST" class="form"
-                    action="{{ url('admin/addcheckin') }}">
-                    @csrf
-                    <input type="hidden" name="customer_id" id="customer_id_check_in" value="">
-                    <div class="fv-row mb-5">
-                        <label class="fs-5 fw-semibold form-label mb-5">Amount</label>
-                        <input type="number" min="0" required class="form-control form-control-solid"
-                            name="amount" />
-                    </div>
-                    <div class="fv-row mb-5">
-                        <label class="fs-5 fw-semibold form-label mb-5">Description</label>
-                        <textarea required class="form-control form-control-solid" name="detail" rows="2" cols="2"></textarea>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="reset" data-bs-dismiss="modal" id="kt_customers_export_cancel"
-                            class="btn btn-light me-3">Discard</button>
-                        <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
-                            <span class="indicator-label">Submit</span>
-                            <span class="indicator-progress">Please wait...
-                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                            </span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="cash-out" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mw-400px">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="fw-bold">Cash Out</h2>
-                <div id="kt_customers_export_close" data-bs-dismiss="modal"
-                    class="btn btn-icon btn-sm btn-active-icon-primary">
-                    <i class="ki-outline ki-cross fs-1"></i>
-                </div>
-            </div>
-            <div class="modal-body scroll-y mx-5 mx-xl-5 my-5">
-                <form id="kt_customers_export_form_cashout" method="POST" class="form"
-                    action="{{ url('admin/addcashout') }}">
-                    @csrf
-                    <input type="hidden" name="customer_id" id="customer_id_cash_out" value="">
-                    <div class="fv-row mb-5">
-                        <label class="fs-5 fw-semibold form-label mb-5">Amount</label>
-                        <input type="number" min="0" required class="form-control form-control-solid"
-                            name="amount" />
-                    </div>
-                    <div class="fv-row mb-5">
-                        <label class="fs-5 fw-semibold form-label mb-5">Description</label>
-                        <textarea required class="form-control form-control-solid" name="detail" rows="2" cols="2"></textarea>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="reset" data-bs-dismiss="modal" id="kt_customers_export_cancel"
-                            class="btn btn-light me-3">Discard</button>
-                        <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
-                            <span class="indicator-label">Submit</span>
-                            <span class="indicator-progress">Please wait...
-                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                            </span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
